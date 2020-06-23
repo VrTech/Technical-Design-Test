@@ -1,8 +1,11 @@
 # Technical-Design-Test
 
+**Demo** (WIP) \
+[WebGL](https://vrtech.github.io/technicaldesigntest/) 
+
 **Ideas**\
 The design is focusing on the fluid of the transition between 2D and 3D user graphical interfaces.\
-With a clean, simple and intuitive design, user experience is enhanced without losing focus on the UI.
+With a clean, simple, and intuitive design, user experience is enhanced without losing the flow of navigation.
 
 **Designed Features**
 
