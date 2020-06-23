@@ -12,7 +12,6 @@ public class FaceToCamera : MonoBehaviour
     {
         Vector3 size = transform.localScale;
         _initialDistance = Vector3.Distance(transform.position, Camera.main.transform.position) / size.x;
-        Debug.Log(Vector3.Distance(transform.position, Camera.main.transform.position));
     }
 
     void Update() 

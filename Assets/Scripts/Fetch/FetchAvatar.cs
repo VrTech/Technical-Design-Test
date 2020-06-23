@@ -1,59 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class FetchAvatar : MonoBehaviour
 {
     public string username;
     private RawImage _rawImage;
-    public static readonly String[] Usernames =
-    {
-        "AbscindFAE",
-        "MelenAdroit",
-        "Ck1sabaCento",
-        "MygielInapt",
-        "Delphically",
-        "Agrypnia",
-        "Abattoir",
-        "Landlubber",
-        "Circuity",
-        "Bibliopoesy ",
-        "Centesimal",
-        "Opodeldoc",
-        "QwertickElapse",
-        "KosiusHeresy",
-        "Aardwolf",
-        "Prelate",
-        "Psychognosy",
-        "Calathiform",
-        "Volerybusch1997",
-        "Digerati",
-        "Zyriangacy_1",
-        "Podexron_j",
-        "Agistnic10",
-        "Whenasguy9254",
-        "Durstg1e362",
-        "Gasbagpr0s2x",
-        "Dirkton19",
-        "Anomalous",
-        "Goombah",
-        "Ditherroen890",
-        "Burnsides",
-        "Gibbous",
-        "Nomenclature",
-        "Gewgawdan001",
-        "Adagioviews",
-        "Diphthong",
-        "Chimpster8",
-        "Shenanigan",
-        "Pandemonium",
-        "Crunging",
-        "Boshher404",
-        "Convivial"
-    };  
 
     void Start()
     {

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class MouseLook : MonoBehaviour
 {
-    public GameObject uiObject;
+    public GameObject UIObject;
     
     //Mouse Control
     public float sensitivityX = 15F;
@@ -23,11 +23,13 @@ public class MouseLook : MonoBehaviour
     RaycastHit _hit;
     private GameObject _activeObject;
     private CanvasGroup _uiGroup;
+    private UIManager _uiManager;
     private Coroutine _fading;
 
     void Start()
     {
-        _uiGroup = uiObject.GetComponent<CanvasGroup>();
+        _uiManager = UIObject.GetComponent<UIManager>();
+        _uiGroup = UIObject.GetComponent<CanvasGroup>();
         _originalRotation = transform.rotation;
         
         //Disable Mouse Cursor
@@ -42,10 +44,7 @@ public class MouseLook : MonoBehaviour
 
         //Player Movement
         Movement();
-        
-        //Detect Cursor Enter/Exit
-        DetectCursor();
-        
+
         //Get Active Object
         GetActiveObject();
     }
@@ -83,16 +82,6 @@ public class MouseLook : MonoBehaviour
         }
     }
 
-    private void DetectCursor()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _isUsingMouse = !_isUsingMouse;
-            Cursor.visible = _isUsingMouse;
-            Cursor.lockState = _isUsingMouse ? CursorLockMode.None  : CursorLockMode.Locked;
-        }
-    }
-
     private void GetActiveObject()
     {
         if (Physics.Raycast(transform.position, transform.forward, out _hit))
@@ -101,11 +90,24 @@ public class MouseLook : MonoBehaviour
             {
                 if (!_activeObject )
                 {
-                    print("Found an object - distance: " + _hit.distance + " name:" + _hit.collider.name);
+                    // print("Found an object - distance: " + _hit.distance + " name:" + _hit.collider.name);
                     _activeObject = _hit.transform.gameObject;
                     UpdateInformation();
                     FadeUI();
                 }
+                
+                //Select world with mouse click
+                if (!_isUsingMouse && Input.GetMouseButtonDown(0))
+                {
+                    ToggleMouse();
+                    _uiManager.description.SetActive((false));
+                }
+                // //Exit world selection
+                // else if (_isUsingMouse && Input.GetMouseButtonDown(0))
+                // {
+                //     ToggleMouse();
+                // }
+
             }
         }
         else if(_activeObject)
@@ -115,12 +117,17 @@ public class MouseLook : MonoBehaviour
         }
     }
 
-
-    
+    private void ToggleMouse()
+    {
+        _isUsingMouse = !_isUsingMouse;
+        Cursor.visible = _isUsingMouse;
+        Cursor.lockState = _isUsingMouse ? CursorLockMode.None  : CursorLockMode.Locked;
+    }
     
     private void UpdateInformation()
     {
         GroupDetails details = _activeObject.GetComponent<GroupDetails>();
+        _uiManager.UpdateInfo(details);
     }
     
     private void FadeUI()
