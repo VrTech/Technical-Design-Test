@@ -15,11 +15,11 @@ By displaying small information about this world, it helps the user to navigate 
 <img src="Resources/hover.gif" alt="drawing" width="700"/>
 
 - **Enter/Exit**\
-Without changing to another scene, the player quickly explores around.
+Without changing to another scene, players can quickly explores around.
 <img src="Resources/enterexit.gif" alt="drawing" width="700"/>
 
 - **Tooltip for names** \
-As we recognize images faster than text, the player can easily find familiar faces or avatars.\
+As we recognize images faster than text, players can easily find familiar faces or avatars.\
 At the same time, the player can check the name by hovering the mouse at the images as well.
 <img src="Resources/members.gif" alt="drawing" width="700"/>
 
