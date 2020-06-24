@@ -3,11 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public struct username
+{
+    public string name;
+    public Texture image;
+}
+
 public class GroupDetails : MonoBehaviour
 {
     public Color worldColor;
     public string groupName;
-    public string[] usernames;
+    public string groupDescription;
+    public username[] usernames;
 
     private void Start()
     {

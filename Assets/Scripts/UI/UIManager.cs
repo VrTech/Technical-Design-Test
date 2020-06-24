@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject groupNameObject;
+    [Header("References")]
+    public TextMeshProUGUI groupNameObject;
     public Transform userListTransform;
-    public GameObject description;
-
+    public TextMeshProUGUI descriptionText;
+    public GameObject buttons;
+    public ToggleMovement toggleMovement;
+    
+    [Header("Prefab")]
     public GameObject userPrefab;
     
     //Update Information to UI Card
-    public void UpdateInfo(GroupDetails details)
+    public void UpdateUserInfo(GroupDetails details)
     {
         //Update Group Name
-        groupNameObject.GetComponent<TMPro.TextMeshProUGUI>().text = details.groupName;
+        groupNameObject.text = details.groupName;
 
         //Clean previous data    
         for (int i = 0; i < userListTransform.childCount; i++)
@@ -25,12 +26,30 @@ public class UIManager : MonoBehaviour
         }
 
         //Update User List
-        foreach (string username in details.usernames)
+        foreach (username user in details.usernames)
         {
-            GameObject user = Instantiate(userPrefab, userListTransform, false);
-            user.GetComponent<FetchAvatar>().username = username;
+            SetAvatar newUser = Instantiate(userPrefab, userListTransform, false).GetComponent<SetAvatar>();
+            newUser.username = user.name;
+            newUser.userImage = user.image;
         }
     }
     
+    //Show/Hide Description
+    public void ToggleDescription()
+    {
+        toggleMovement.isToggled = !toggleMovement.isToggled;
+        buttons.SetActive(toggleMovement.isToggled);
+    }
     
+    //Update card description
+    public void UpdateDescription(string text)
+    {
+        descriptionText.text = text;
+    }
+
+    //Clear card description
+    public void ClearDescription()
+    {
+        descriptionText.text = "Click to see more...";
+    }
 }

@@ -2,11 +2,16 @@
 using UnityEngine;
 using System.Collections;
 
-public class MouseLook : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
+
+    #region VARIABLES
+
+    [Header("References")]
     public GameObject UIObject;
     
     //Mouse Control
+    [Header("Player Settings")]
     public float sensitivityX = 15F;
     public float sensitivityY = 15F;
     private float _rotationX = 0F;
@@ -21,11 +26,18 @@ public class MouseLook : MonoBehaviour
     
     //Active Object
     RaycastHit _hit;
-    private GameObject _activeObject;
+    private GameObject _activeWorld;
     private CanvasGroup _uiGroup;
     private UIManager _uiManager;
     private Coroutine _fading;
+    
+    //Show Info
+    private bool _isDisplayed;
 
+    #endregion
+
+    #region UNITY METHODS
+    
     void Start()
     {
         _uiManager = UIObject.GetComponent<UIManager>();
@@ -47,7 +59,17 @@ public class MouseLook : MonoBehaviour
 
         //Get Active Object
         GetActiveObject();
+        
+        //Select Active Object
+        SelectActiveObject();
+
+        //Show/Hide Info
+        DisplayInformation();
     }
+
+    #endregion
+
+    #region METHODS
 
     private void MouseControl()
     {
@@ -61,6 +83,8 @@ public class MouseLook : MonoBehaviour
 
     private void Movement()
     {
+        if (_isUsingMouse) return;
+        
         if (Input.GetKey(KeyCode.W))
         {
             transform.Translate(Vector3.forward * movementSpeed);
@@ -88,46 +112,57 @@ public class MouseLook : MonoBehaviour
         {
             if (_hit.transform.CompareTag("World"))
             {
-                if (!_activeObject )
+                if (!_activeWorld )
                 {
-                    // print("Found an object - distance: " + _hit.distance + " name:" + _hit.collider.name);
-                    _activeObject = _hit.transform.gameObject;
-                    UpdateInformation();
-                    FadeUI();
+                    _activeWorld = _hit.transform.gameObject;
                 }
-                
-                //Select world with mouse click
-                if (!_isUsingMouse && Input.GetMouseButtonDown(0))
-                {
-                    ToggleMouse();
-                    _uiManager.description.SetActive((false));
-                }
-                // //Exit world selection
-                // else if (_isUsingMouse && Input.GetMouseButtonDown(0))
-                // {
-                //     ToggleMouse();
-                // }
-
             }
         }
-        else if(_activeObject)
+        else if(_activeWorld)
         {
-            _activeObject = null;
-            FadeUI();
+            _activeWorld = null;
         }
     }
 
-    private void ToggleMouse()
+    private void SelectActiveObject()
+    {
+        if (_activeWorld)
+        {
+            //Select world with a mouse click
+            if (_isUsingMouse || !Input.GetMouseButtonDown(0)) return;
+            ToggleMouse();
+            ToggleDescription();
+        }
+    }
+
+    private void DisplayInformation()
+    {
+        if (!_isDisplayed && _activeWorld)
+        {
+            _isDisplayed = true;
+            GroupDetails details = _activeWorld.GetComponent<GroupDetails>();
+            _uiManager.UpdateUserInfo(details);
+            FadeUI();
+        }
+        else if(_isDisplayed && !_activeWorld)
+        {
+            _isDisplayed = false;
+            FadeUI();
+        }
+    }
+    
+    public void ToggleMouse()
     {
         _isUsingMouse = !_isUsingMouse;
         Cursor.visible = _isUsingMouse;
         Cursor.lockState = _isUsingMouse ? CursorLockMode.None  : CursorLockMode.Locked;
     }
     
-    private void UpdateInformation()
+    public void ToggleDescription()
     {
-        GroupDetails details = _activeObject.GetComponent<GroupDetails>();
-        _uiManager.UpdateInfo(details);
+        GroupDetails details = _activeWorld.GetComponent<GroupDetails>();
+        _uiManager.ToggleDescription();
+        _uiManager.UpdateDescription(details.groupDescription);
     }
     
     private void FadeUI()
@@ -138,10 +173,10 @@ public class MouseLook : MonoBehaviour
 
     IEnumerator Fading()
     {
-        float start = _activeObject ? 0 : 1;
-        float end = _activeObject ? 1 : 0;
+        float start = _activeWorld ? 0 : 1;
+        float end = _activeWorld ? 1 : 0;
         float timer = 0;
-        float duration = _activeObject?0.6f:0.2f;
+        float duration = _activeWorld?0.6f:0.2f;
 
         while (Math.Abs(_uiGroup.alpha - end) > 0)
         {
@@ -152,4 +187,6 @@ public class MouseLook : MonoBehaviour
         }
         
     }
+
+    #endregion
 }
