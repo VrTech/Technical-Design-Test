@@ -1,6 +1,6 @@
 # Technical-Design-Test
 
-**Demo** (WIP) \
+**Demo** (v1.0) \
 [WebGL](https://vrtech.github.io/TechnicalDesignTest/) 
 
 **Ideas**\
