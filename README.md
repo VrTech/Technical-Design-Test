@@ -1,5 +1,7 @@
 # Technical-Design-Test
 
+Developed with Unity 2019.4
+
 **Demo** (v1.0) \
 [WebGL](https://vrtech.github.io/TechnicalDesignTest/) 
 
